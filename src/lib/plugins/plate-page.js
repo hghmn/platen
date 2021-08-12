@@ -85,7 +85,7 @@ export function PlatePagePluginFactory(options) {
           const html = marked(markdown)
           return template({ content: html })
         } else if (files.includes('index.js')) {
-          const script = path.resolve(root, 'src/javascript/index.js')
+          const script = path.resolve(root, path.join(base, page, 'index.js'))
           const source = template({ files: { js: [{ fileName: script, type: 'module' }] } }) // `<html><script src="${resolved}"></html` // fs.readFileSync(resolved, 'utf-8')
           return source;
         } else {
