@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+
+const cli = require('../dist/lib/cli')
+
+/**
+ * Expose / Entry Point
+ */
+if (!module.parent) {
+	process.title = 'plate';
+	Promise.resolve()
+		.then(() => {
+			return main(process.argv.slice(2), process.cwd());
+		})
+		.then(() => {
+			// completed
+		})
+		.catch(e => {
+			console.error(e.message)
+			process.exit(1)	
+		})
+} else {
+	module.exports = main;
+}
+
+/**
+ * @param  {string[]} argv
+ * @param  {string}   root
+ * @return {Promise}
+ */
+function main(argv, root) {
+	const cliArgs = getArgs(argv)
+	const [command, ...args] = cliArgs.commands;
+	const options = {
+		root,
+		...cliArgs.options,
+	}
+
+	// handle version command
+	if ('version' in options || 'v' in options || command === 'version') {
+		return version()
+	}
+
+	if (!command) {
+		throw new Error('No command given')
+	}
+
+	return cli.run(command, args, options)
+}
+
+function getArgs(argv) {
+	const options = {}
+	const commands = []
+
+	// capture args
+	while (argv.length) {
+		let arg = argv.shift(),
+			key,
+			value;
+
+		if (arg.startsWith('--')) {
+			arg = arg.substring(2)
+			if (arg.includes('=')) {
+				[key, value] = arg.split('=')
+			} else {
+				key = arg
+				value = argv.shift()
+			}
+
+			options[key] = value
+		} else if (arg.startsWith('-')) {
+			arg = arg.substring(1).split('')
+			for (const key of arg) {
+				options[key] = (options[key] || 0) + 1;
+			}
+		} else {
+			commands.push(arg)
+		}
+	}
+
+	return {
+		options,
+		commands,
+	}
+}
+
+function version() {
+	const pkg = require('../package.json');
+	console.log(`${pkg.name} version ${pkg.version}`);
+
+	if (pkg.homepage) {
+		console.log(`homepage: ${pkg.homepage}`);
+	}
+}

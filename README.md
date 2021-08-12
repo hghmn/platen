@@ -1,2 +1,4 @@
-# platen
-Minimal boilerplate for multi-page JavaScript applications
+Platen
+======
+
+Minimal, configuration-driven boilerplate for JavaScript applications

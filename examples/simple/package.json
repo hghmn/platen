@@ -1,0 +1,16 @@
+{
+  "name": "@hghmn/platen-examples-simple",
+  "version": "1.0.0",
+  "description": "Simple example repo for platen",
+  "type": "module",
+  "scripts": {
+    "build": "../../bin/plate build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Nathan Hughes",
+    "url": "https://github.com/hghmn"
+  },
+  "license": "ISC"
+}

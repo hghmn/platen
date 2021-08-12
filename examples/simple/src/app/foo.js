@@ -1,0 +1,1 @@
+console.log('foo bar baz '.repeat(1000))
